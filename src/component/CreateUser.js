@@ -8,29 +8,24 @@ import { useFetch } from '../hooks/useFetch';
 
 
 const PostUser = ({show, onHide, people, setPeople}) => {
-  const [value, setValue] = useState("");
-
-  const [fetchPeople, isGenresPeople, PeopleError] = useFetch(async () => {
+    const [fetchPeople, isGenresPeople, PeopleError] = useFetch(async () => {
     const response = await getAllPeople()
     setPeople(response.data)
   })
 
-  const [fetchPostUser, isPostUser, PostUserError] = useFetch(async () => {
-    const response = await postUser(value, max_quene+1, current_date.toLocaleString()).then(data => {
-      setValue('')
-      onHide()
-      fetchPeople()
-    })
-  })
+  
   
   let quene = []
   people.map(people =>quene.push(people.queue_number))
   let max_quene = Math.max(...quene);
   let current_date = new Date();
-  
+  const [value, setValue] = useState("");
   const addUser = () =>{
-    fetchPostUser()
-    console.log(value)
+    postUser(value, max_quene+1, current_date.toLocaleString()).then(data => {
+      setValue('')
+      onHide()
+      fetchPeople()
+    })
   }
   
   return (
